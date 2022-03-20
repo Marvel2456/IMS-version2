@@ -1,6 +1,6 @@
 from django import contrib
 from django.db.models.query import QuerySet
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Product, Entry, Category, Brand, Staff
 from .forms import CatForm, BrandForm, CountForm, ProductForm, CreateUserForm, ReorderForm, RestockForm, SalesForm
 from django.contrib import messages
@@ -140,7 +140,6 @@ def product(request):
 @login_required(login_url=('login'))
 @allowed_users(allowed_roles=['admin'])
 def AddProduct(request):
-
     form = ProductForm()
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -274,38 +273,39 @@ def DeleteCat(request, pk):
 
 
 @login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin', 'staffs'])
+@allowed_users(allowed_roles=['admin', 'staff'])
 def sales(request, pk):
     products = Product.objects.get(id=pk)
     form = SalesForm(request.POST or None, instance=products)
-    if form.is_valid:
+    if form.is_valid():
         products =  form.save(commit=False)
-
-
         products.save()
-        return redirect('product')
+        return redirect('/productdetails/'+str(products.id))
+    else :
+        form = SalesForm(instance=products)
 
     context = {
+        'products':products,
         'form' : form
     }
-    return render(request, 'ims/productdetails.html', context)
+    return render(request, 'ims/add_new.html', context)
 
 @login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin', 'staffs'])
+@allowed_users(allowed_roles=['admin', 'staff'])
 def count(request, pk):
     products = Product.objects.get(id=pk)
     form = CountForm(request.POST or None, instance=products)
-    if form.is_valid:
+    if form.is_valid():
         products = form.save(commit=False)
 
         products.save()
-        return redirect('product')
+        return redirect('/productdetails/'+str(products.id))
 
     context = {
         'products':products,
         'form':form
     }
-    return render(request, 'ims/productdetails.html', context)
+    return render(request, 'ims/add_new.html', context)
     
     
 
@@ -314,7 +314,26 @@ def count(request, pk):
 def reorder(request, pk):
     products = Product.objects.get(id=pk)
     form = ReorderForm(request.POST or None, instance=products)
-    if form.is_valid:
+    if form.is_valid():
+        products = form.save(commit=False)
+        products.save()
+
+        return redirect('/productdetails/'+str(products.id))
+
+    context = {
+        'products' : products,
+        'form' : form
+    }
+
+    return render(request, 'ims/add_new.html', context)
+
+
+@login_required(login_url=('login'))
+@allowed_users(allowed_roles=['admin'])
+def restock(request, pk):
+    products = Product.objects.get(id=pk)
+    form = RestockForm(request.POST or None, instance=products)
+    if form.is_valid():
         products = form.save(commit=False)
         products.save()
 
@@ -327,27 +346,8 @@ def reorder(request, pk):
 
     return render(request, 'ims/productdetails.html', context)
 
-
 @login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin'])
-def restock(request, pk):
-    products = Product.objects.get(id=pk)
-    form = RestockForm(request.POST or None, instance=products)
-    if form.is_valid:
-        products = form.save(commit=False)
-        products.save()
-
-        return redirect('')
-
-    context = {
-        'products' : products,
-        'form' : form
-    }
-
-    return render(request, 'ims/productdetails.html', context)
-
-@login_required(login_url=('login'))
-@allowed_users(allowed_roles=['staffs'])
+@allowed_users(allowed_roles=['admin','staff'])
 def StaffProduct(request):
     products = Product.objects.all()
     form = SalesForm()
