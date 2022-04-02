@@ -1,0 +1,55 @@
+{% extends 'ims/add_new.html' %}
+
+<!--== Edit Product Modal ==-->
+
+<!--Modal Id-->
+{% block modal-id %} id="editModal{{ products.pk }}" {% endblock modal-id %}
+
+<!--Modal Title-->
+{% block modal-title %}Edit Product {% endblock modal-title %}
+
+<!--Modal Action-->
+{% block action %} action="/product" {% endblock action %}
+
+<!--Modal BTN-Action-->
+{% block btn-action %}Save Changes{% endblock btn-action %}
+
+<!--Modal Form-->
+{% comment %} {% block Value-id %}
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" name="id" value="{{products.id}}">
+</div>
+{% endblock Value-id %} {% endcomment %}
+
+{% block Value-name %}
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" name="" value="{{products.name}}">
+</div>
+{% endblock Value-name %}
+
+{% block Value-category %}
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" name="" value="{{products.category}}">
+</div>
+{% endblock Value-category %}
+
+{% block Value-brand %}
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" name="" value="{{products.brand}}">
+</div>
+{% endblock Value-brand %}
+
+{% block Value-str_qnty %}
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" name="" value="{{products.str_qnty}}">
+</div>
+{% endblock Value-str_qnty %}
+
+{% block Value-price %}
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" name="" value="{{products.price}}">
+</div>
+{% endblock Value-price %}
+
+
+<!--== Edit Product Modal ==-->

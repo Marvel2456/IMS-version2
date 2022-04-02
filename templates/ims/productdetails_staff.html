@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Product Details{% endblock %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <h4>{{products.name}}</h4>
+        <span>
+            <a href="{% url 'staffproduct' %}" class="" id="arrow">
+              <b><i class="bi bi-arrow-left-circle-fill" style="font-size:30px; color:black;"></i></b>
+            </a>
+        </span>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Reorder Level</th>
+                    <th>Last Updated</th>
+                </tr>
+                
+                <tr>
+                    <td>{{products.name}}</td>
+                    <td>{{products.str_qnty}}</td>
+                    <td>{{products.price}}</td>
+                    <td>{{products.reorder_level}}</td>
+                    <td>{{products.updated_at}}</td>
+                    
+                </tr>
+                
+            </table>
+            <div class="row d-flex justify-content-center">
+                <a class="btn btn-outline-warning btn-sm mx-2 col-3" href="" data-toggle="modal" data-target="#saleModal">Record Sales</a>
+                <a class="btn btn-outline-info btn-sm col-3 mx-2" href="" data-toggle="modal" data-target="#countModal">Record Count</a>
+            </div>
+        </div>
+    </div>
+</div>    
+
+<!--Modal-->
+<div class="modal fade" id="saleModal" tabindex="-1" aria-labelledby="saleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saleModalLabel">Record Sales</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="" class="py-3">
+                {% csrf_token %}
+                {{sales_form}}
+                <div class="py-3">
+                <input type="submit" name="Submit" class="btn btn-outline-info">
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+<!--Modal end-->
+<!--Modal-->
+<div class="modal fade" id="countModal" tabindex="-1" aria-labelledby="countModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="countModalLabel">Record Count</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="" class="py-3">
+                {% csrf_token %}
+                {{count_form}}
+                <div class="py-3">
+                <input type="submit" name="Submit" class="btn btn-outline-info">
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+<!--Modal end-->
+{% endblock %}

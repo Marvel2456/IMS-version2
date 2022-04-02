@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Product{% endblock title%}
+
+{% block content %}
+{% include 'ims/add_new.html' %}
+
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" onkeyup="searchFunction()" id="search" placeholder="Product Name" aria-label="Product Name" aria-describedby="basic-addon2">
+            <span class="input-group-text" id="basic-addon2"><a href="{% url 'product' %}"><i class="bi bi-arrow-repeat"></i></a></span>
+        </div>
+        <h5>Products</h5>
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block" href="" data-toggle="modal" data-target="#addModal" >Create Product</a>
+            <!--Modal-->
+           
+            <!--Modal end-->
+            <table class="table" id="myTable">
+                <tr id="chk-th">
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {% for products in products %}
+                <tr>
+                    <td>{{products.name}}</td>
+                    <td>{{products.str_qnty}}</td>
+                    <td>{{products.price}}</td>
+                    <td><a href="{% url 'delete_product' products.id %}" class="btn btn-danger" title="Delete">
+                        <i class="bi bi-trash-fill"></i>
+                    </a>&nbsp;
+                    <a  class="btn btn-success" title="Edit" data-toggle="modal" data-target="#editModal">
+                        <i class="bi bi-pencil"></i>
+                    </a></td>
+                    <td><a href="{% url 'productdetails' products.id %}" class="btn btn-primary" title="Details">
+                        <i class="bi bi-eye"></i>
+                    </a></td>
+                </tr>
+                
+                {% comment %} {% include 'ims/edit.html' %} {% endcomment %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal-->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Record Sales</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="" class="py-3">
+                {% csrf_token %}
+                {{update_form}}
+                <div class="py-3">
+                <input type="submit" name="Submit" class="btn btn-outline-info">
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+<!--Modal end-->
+
+<span class="text-primary" id="no-data"></span>
+
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+    <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    <script>
+        var m = "{{ message }}";
+        swal.fire("perfect !", m, "success")
+    </script>
+    {% endif %}
+{% endfor %}
+
+{% endblock %}
+    
+
+    

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Category{% endblock%}
+
+{% block content %}
+{% include 'ims/add_new.html' %}
+<br>
+<div class="row">
+    <div class="col-md">
+        
+        <div class="card card-body">
+            <h5>Category</h5>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                    {% for cats in cats %}
+                    <tr>
+                        <td>{{cats.name}}</td>
+                        <td><a href="{% url 'delete_cat' cats.id %}" 
+                            class="btn btn-danger" title="Delete"><i 
+                            class="bi bi-trash-fill"></i></a>&nbsp;<a href="{% url 'update_cat' cats.id %}" 
+                            class="btn btn-success" title="Edit"><i 
+                            class="bi bi-pencil"></i></a></td>
+                    </tr>
+                    {% endfor %} 
+                    
+            </table>
+        </div>
+        <div class="col-md py-3">
+            <a class="btn btn-outline-primary" href="" data-toggle="modal" data-target="#exampleModal1">Create Category</a>
+            <!--Modal-->
+            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModal1Label" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModal1Label">Add Category</h5>
+                      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="" class="py-3">
+                            {% csrf_token %}
+                            {{form}}
+                            <div class="py-3">
+                            <input type="submit" name="Submit" class="btn btn-outline-info">
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!--Modal end-->
+        </div>
+    </div>
+</div>    
+
+{% endblock %}
+    
+
+    

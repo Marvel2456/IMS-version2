@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Product{% endblock %}
+{% block content %}
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" onkeyup="searchFunction()" id="search" placeholder="Product Name" aria-label="Product Name" aria-describedby="basic-addon2">
+        <span class="input-group-text" id="basic-addon2"><a href="{% url 'staffproduct' %}"><i class="bi bi-arrow-repeat"></i></a></span>
+      </div>
+        <h5>Product</h5>
+        <hr>
+        <div class="card card-body">
+            <table class="table" id="myTable">
+                <tr id="chk-th">
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+                {% for products in products %}
+                <tr>
+                    <td>{{products.name}}</td>
+                    <td>{{products.str_qnty}}</td>
+                    <td>{{products.price}}</td>
+                    <td><a href="{% url 'productdetails_staff' products.id %}" class="btn btn-primary" title="product details"><i class=" bi bi-eye"></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+<!--Modal-->
+{% comment %} <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModal3Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModal3Label">Sales</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="" class="py-3">
+                {% csrf_token %}
+                {{form}}
+                <div class="py-3">
+                <input type="submit" name="Submit" class="btn btn-outline-info">
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+<!--Modal end-->
+<!--Modal-->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModal2Label">Record Count</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="" class="py-3">
+                {% csrf_token %}
+                {{form}}
+                <div class="py-3">
+                <input type="submit" name="Submit" class="btn btn-outline-info">
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div> {% endcomment %}
+<!--Modal end-->
+<span class="text-primary" id="no-data"></span>
+
+
+{% endblock content %}
+

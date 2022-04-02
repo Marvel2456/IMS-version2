@@ -1,0 +1,40 @@
+{% extends 'base_auth.html' %}
+
+{% block title %}login{% endblock %}
+{% block content %}
+<div class="row py-5 mt-5">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="card border-0">
+            <div class="card-body">
+                <div class="card-title py-3" style="text-align: center;">
+                    <h4 class="">Login</h4>
+                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-person" aria-hidden="true"></i></span>
+                        </div>
+                        <input type="text" name="username" placeholder="Username" class="form-control">
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                        </div>
+                        <input type="password" name="password" placeholder="Password" class="form-control">
+                    </div>
+                    <input type="Submit" name="Login" class="btn btn-primary" style="width: 100%;">
+                </form>
+                {% for message in messages %}
+                        <p>{{message}}</p>
+                {% endfor %}
+                <div style="text-align: center;">
+                    <small>do not have an account <a href="{% url 'register' %}">sign up</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+{% endblock %}

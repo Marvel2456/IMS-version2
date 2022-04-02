@@ -1,0 +1,62 @@
+{% extends 'base_auth.html' %}
+
+{% block title %}register{% endblock %}
+{% block content %}
+<div class="row py-5">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="card border-0">
+            <div class="card-body">
+                <div class="card-title py-3" style="text-align: center;">
+                    <h4 class="">Create an  account</h4>
+                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-person" aria-hidden="true"></i></span>
+                        </div>
+                        {{form.username}}
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        </div>
+                        {{form.email}}
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                        </div>
+                        {{form.password1}}
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                        </div>
+                        {{form.password2}}
+                    </div>
+                    <input type="submit" name="Create User" class="btn btn-primary">
+                </form>
+                <div class="align-center" style="text-align: center;">
+                    <small>already have an account <a href="{% url 'login' %}">login</a></small>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+
+<script>
+    var form_fields = document.getElementsByTagName('input')
+    form_fields[1].placeholder='Username';
+    form_fields[2].placeholder='Email';
+    form_fields[3].placeholder='Enter Password';
+    form_fields[4].placeholder='Confirm Password';
+
+    for (var field in form_fields){
+        form_fields[field].className += ' form-control'
+    }
+</script>
+{% endblock %}
