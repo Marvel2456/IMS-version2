@@ -1,3 +1,4 @@
+import imp
 from django import contrib
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, render, redirect
@@ -8,6 +9,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users,admin_only
 from django.contrib.auth.models import Group
+import json
+from django.core import serializers
 
 @unauthenticated_user
 def registerPage(request):
@@ -97,6 +100,7 @@ def brand(request):
         form = BrandForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, (brands.name) + ' successfully created')
             return redirect('brand')
     context = {
         'form':form,
@@ -113,6 +117,7 @@ def cat(request):
         form = CatForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, (cats.name) + ' successfully created')
             return redirect('cat')
     context = {
         'form':form,
@@ -129,58 +134,13 @@ def product(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,  'successfully created')
             return redirect('product')
     context = {
         'form':form,
         'products':products
     }
     return render(request, 'ims/product.html', context)
-
-
-@login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin'])
-def AddProduct(request):
-    form = ProductForm()
-    if request.method == 'POST':
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('product')
-    context = {
-        'form':form
-    }
-    return render(request, 'ims/add_new.html', context)
-    
-@login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin'])
-def AddBrand(request):
-
-    form = BrandForm()
-    if request.method == 'POST':
-        form = BrandForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('brand')
-    context = {
-        'form':form
-    }
-    return render(request, 'ims/add_new.html', context)
-
-@login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin'])
-def AddCategory(request):
-
-    form = CatForm()
-    if request.method == 'POST':
-        form = CatForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('cat')
-    context = {
-        'form':form
-    }
-    return render(request, 'ims/add_new.html', context)
-
 
 @login_required(login_url=('login'))
 @allowed_users(allowed_roles=['admin'])
@@ -191,9 +151,12 @@ def UpdateProduct(request, pk):
         form = ProductForm(request.POST, instance=products)
         if form.is_valid():
             form.save()
+            print("Edited")
+            messages.success(request, 'successfully updated')
             return redirect('product')
     context = {
         'form':form,
+        'products':products
     }
     return render(request, 'ims/add_new.html', context)
 
@@ -207,6 +170,7 @@ def UpdateBrand(request, pk):
         form = BrandForm(request.POST, instance=brands)
         if form.is_valid():
             form.save()
+            messages.success(request, (brands.name) + ' successfully updated')
             return redirect('brand')
     context = {
         'form':form,
@@ -223,6 +187,7 @@ def UpdateCat(request, pk):
         form = CatForm(request.POST, instance=cats)
         if form.is_valid():
             form.save()
+            messages.success(request, (cats.name) + ' successfully updated')
             return redirect('cat')
     context = {
         'form':form,
@@ -236,6 +201,7 @@ def DeleteProduct(request, pk):
     products = Product.objects.get(id=pk)
     if request.method == 'POST':
         products.delete()
+        messages.success(request, 'successfully Deleted')
         return redirect('product')
 
     context = {
@@ -250,6 +216,7 @@ def DeleteBrand(request, pk):
     brands = Brand.objects.get(id=pk)
     if request.method == 'POST':
         brands.delete()
+        messages.success(request, 'successfully Deleted')
         return redirect('brand')
 
     context = {
@@ -264,69 +231,13 @@ def DeleteCat(request, pk):
     cats = Category.objects.get(id=pk)
     if request.method == 'POST':
         cats.delete()
+        messages.success(request, 'successfully Deleted')
         return redirect('cat')
 
     context = {
         'name':cats
     }
     return render(request, 'ims/delete.html', context)
-
-
-@login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin', 'staff'])
-def sales(request, pk):
-    products = Product.objects.get(id=pk)
-    form = SalesForm(request.POST or None, instance=products)
-    if form.is_valid():
-        products =  form.save(commit=False)
-        products.save()
-        return redirect('/productdetails/'+str(products.id))
-    else :
-        form = SalesForm(instance=products)
-
-    context = {
-        'products':products,
-        'form' : form
-    }
-    return render(request, 'ims/add_new.html', context)
-
-@login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin', 'staff'])
-def count(request, pk):
-    products = Product.objects.get(id=pk)
-    form = CountForm(request.POST or None, instance=products)
-    if form.is_valid():
-        products = form.save(commit=False)
-
-        products.save()
-        return redirect('/productdetails/'+str(products.id))
-
-    context = {
-        'products':products,
-        'form':form
-    }
-    return render(request, 'ims/add_new.html', context)
-    
-    
-
-@login_required(login_url=('login'))
-@allowed_users(allowed_roles=['admin'])
-def reorder(request, pk):
-    products = Product.objects.get(id=pk)
-    form = ReorderForm(request.POST or None, instance=products)
-    if form.is_valid():
-        products = form.save(commit=False)
-        products.save()
-
-        return redirect('/productdetails/'+str(products.id))
-
-    context = {
-        'products' : products,
-        'form' : form
-    }
-
-    return render(request, 'ims/add_new.html', context)
-
 
 @login_required(login_url=('login'))
 @allowed_users(allowed_roles=['admin'])
@@ -350,26 +261,51 @@ def restock(request, pk):
 @allowed_users(allowed_roles=['admin','staff'])
 def StaffProduct(request):
     products = Product.objects.all()
-    form = SalesForm()
-    if request.method == 'POST':
-        form = SalesForm(request.POST or None, instance=products)
-        if form.is_valid:
-            form.save(commit=False)
-            products.save()
-
-            return redirect('staffproduct')
-            
+           
     context = {
         'products':products,
-        'form' : form
-
     }
     return render(request, 'ims/staffproduct.html', context)
 
+def StaffProductDetails(request, pk):
+    products = Product.objects.get(id=pk)
+    sales_form = SalesForm(request.POST or None, instance=products)
+    count_form = CountForm(request.POST or None, instance=products)
+    if sales_form.is_valid() or count_form.is_valid():
+        products = sales_form.save()
+        products = count_form.save()
+        products.save()
+        messages.success(request, 'successfully updated')
+            
+        return redirect('/productdetails_staff/'+str(products.id))
+    
+    context ={
+        'products' : products,
+        'sales_form' : sales_form,
+        'count_form' : count_form
+    }
+    return render(request, 'ims/productdetails_staff.html', context)
+
+
 def ProductDetails(request, pk):
     products = Product.objects.get(id=pk)
+    sales_form = SalesForm(request.POST or None, instance=products)
+    reorder_form = ReorderForm(request.POST or None, instance=products)
+    count_form = CountForm(request.POST or None, instance=products)
+    if sales_form.is_valid() or reorder_form.is_valid() or count_form.is_valid():
+        products = sales_form.save(commit=False)
+        products = reorder_form.save(commit=False)
+        products = count_form.save(commit=False)
+        products.save()
+        messages.success(request, 'successfully updated')
+            
+        return redirect('/productdetails/'+str(products.id))
+        
     context = {
-        'products' : products
+        'products' : products,
+        'reorder_form' : reorder_form,
+        'count_form' : count_form,
+        'sales_form' : sales_form
     }
 
     return render(request, 'ims/productdetails.html', context)
