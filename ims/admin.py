@@ -1,14 +1,24 @@
 from django.contrib import admin
-from .models import Brand, Category, Product, Entry, Staff
+from simple_history.admin import SimpleHistoryAdmin
+from .models import Brand, Category, Product, Staff, ProductReport
+from import_export.admin import ImportExportModelAdmin
+from .resources import ProductResource
 
 # Register your models here.
 
 
-class EntryCreateAdmin(admin.ModelAdmin):
-    list_display = ['rep_name','entry_date',]
+
+@admin.register(Product)
+class ProductAdmin(ImportExportModelAdmin):
+    resource_class = ProductResource
+    
+
+class ProductHistory(SimpleHistoryAdmin):
+    list_display = ["id", "name", "status"]
+    history_list_display = ["status"]
+    search_fields = ['name', 'user__username']
 
 admin.site.register(Brand)
 admin.site.register(Category)
-admin.site.register(Product)
 admin.site.register(Staff)
-admin.site.register(Entry, EntryCreateAdmin)
+admin.site.register(ProductReport, ProductHistory)

@@ -51,14 +51,17 @@ class BrandForm(ModelForm):
 class ProductForm(ModelForm):
     class Meta:
         model = Product
-        fields = ('name', 'category', 'brand', 'str_qnty', 'price')
+        fields =  ('name', 'category', 'brand', 'quantity', 'batch_no', 'unit', 'price', 'status')
 
         widgets = {
-            'name' : forms.TextInput(attrs={'class':'form-control'}),
-            'category' : forms.Select(attrs={'class':'form-control'}),
-            'brand' : forms.Select(attrs={'class':'form-control'}),
-            'str_qnty' : forms.TextInput(attrs={'class':'form-control'}),
-            'price' : forms.TextInput(attrs={'class':'form-control'}),
+            'name' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Name'}),
+            'category' : forms.Select(attrs={'class':'form-control', 'placeholder':'Category'}),
+            'brand' : forms.Select(attrs={'class':'form-control', 'placeholder':'Brand'}),
+            'quantity' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Quantity'}),
+            'batch_no' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Batch no'}),
+            'unit' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Unit'}),
+            'price' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Price'}),
+            'status' : forms.Select(attrs={'class':'form-control', 'placeholder':'Status'}),
         }
     
     def clean_name(self):
@@ -71,15 +74,32 @@ class ProductForm(ModelForm):
                 raise forms.ValidationError(name + ' is already created')
         return name
 
+class ProductUpdateForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ('name', 'category', 'brand', 'quantity', 'batch_no', 'unit', 'price', 'status')
+        
+        widgets = {
+            'name' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Name'}),
+            'category' : forms.Select(attrs={'class':'form-control', 'placeholder':'Category'}),
+            'brand' : forms.Select(attrs={'class':'form-control', 'placeholder':'Brand'}),
+            'quantity' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Quantity'}),
+            'batch_no' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Batch no'}),
+            'unit' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Unit'}),
+            'price' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Price'}),
+            'status' : forms.Select(attrs={'class':'form-control', 'placeholder':'Status'}),
+        }
+
 
 class SalesForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['mode_of_sales', 'sales',]
+        fields = [ 'mode_of_sales', 'quantity_sold',]
 
         widgets= {
             'mode_of_sales': forms.Select(attrs={'class':'form-control'}),
-            'sales' : forms.TextInput(attrs={'class':'form-control'})
+            'quantity_sold' : forms.TextInput(attrs={'class':'form-control'}),
+            'price' : forms.TextInput(attrs={'class':'form-control'})
         }
 
 class CountForm(forms.ModelForm):
@@ -94,18 +114,25 @@ class CountForm(forms.ModelForm):
 class RestockForm(ModelForm):
     class Meta:
         model = Product
-        fields = ('restock', 'price')
+        fields = [ 'quantity_restocked',]
 
         widgets = {
-            'restock' : forms.TextInput(attrs={'class':'form-control'}),
+            'quantity_restocked' : forms.TextInput(attrs={'class':'form-control'}),
             'price' : forms.TextInput(attrs={'class':'form-control'})
         }
 
 class ReorderForm(ModelForm):
     class Meta:
         model = Product
-        fields = ('reorder_level',)
+        fields = ['reorder_level']
 
         widgets = {
             'reorder_level' : forms.TextInput(attrs={'class':'form-control'})
         }
+        
+class ProductReportForm(forms.ModelForm):
+    start_date = forms.DateTimeField(required=False)
+    end_date = forms.DateTimeField(required=False)
+    class Meta:
+        model = ProductReport
+        fields = ['start_date', 'end_date']

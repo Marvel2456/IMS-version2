@@ -9,3 +9,5 @@ def staff_profile(sender, instance, created, **kwargs):
         group = Group.objects.get(name='staff')
         instance.groups.add(group)
         Staff.objects.create(user=instance, name=instance.username)
+      
+        
