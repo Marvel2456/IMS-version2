@@ -15,10 +15,10 @@
             <div class="modal-body">
 
                 <!--== Block Id ==-->
-                {% block Value-id %}{% endblock Value-id %}
+                {% comment %} {% block Value-id %}{% endblock Value-id %} {% endcomment %}
 
-                {% comment %} {{form}} {% endcomment %}
-                <div class="mb-3 input-group">
+                {{form}}
+                {% comment %} <div class="mb-3 input-group">
                   {% block Value-name %}{{form.name}}{% endblock Value-name %}
                 </div>
                 <div class="mb-3 input-group">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-3 input-group">
                   {% block Value-price %}{{form.price}}{% endblock Value-price %}
-                </div>
+                </div> {% endcomment %}
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">
@@ -47,36 +47,5 @@
     </div>
   </div>
   <!--=== Modal for Product Ends  ===-->
-
-  <!--=== Modal for Category  ===-->
-  {% comment %} <div class="modal fade" {% block modal-cat-id %} id="addModal1" {% endblock modal-cat-id %} tabindex="-1" aria-labelledby="addModal1Label" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addModal1Label">
-              {% block modal-title-cat %}Add Category {% endblock modal-title-cat %} </h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        
-        <form {% block action-cat %} action="/cat" {% endblock action-cat %} method="POST" class="py-3">
-            {% csrf_token %}
-            <div class="modal-body">
-
-                <!--== Block Id ==-->
-                {% block Value-id-cat %}{% endblock Value-id-cat %}
-
-                {{form}}
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">
-                        {% block btn-action-cat %}Add Category{% endblock btn-action-cat %}
-                    </button>
-                  </div>
-            </div>
-        </form> 
-      </div>
-    </div>
-  </div>
-  <!--=== Modal for Category Ends  ===--> {% endcomment %}
 
 {% endblock %}

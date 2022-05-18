@@ -10,7 +10,7 @@
 <br>
 <div class="row">
     <div class="col-md-6">
-        <div class="col-md">
+        <div class="col-md"></br>
             <div class="card card-body">
               <canvas id="myChart"></canvas>
               <script>
@@ -18,10 +18,10 @@
                 const myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                        labels: [{% for reports in reports %}'{{ reports.name }}', {% endfor %}],
                         datasets: [{
-                            label: '# of Votes',
-                            data: [12, 19, 3, 5, 2, 3],
+                            label: 'largest recent sales',
+                            data: [{% for reports in reports %}'{{ reports.quantity_sold }}', {% endfor %}],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',
@@ -42,40 +42,34 @@
                         }]
                     },
                     options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
+                        title: {
+                          display:true,
+                          text: 'Product sale summary'
+                        },
                     }
                 });
+              
               </script>
               
             </div>
         </div>
     </div>
+    
     <div class="col-md-6">
-        <div class="col-md">
+        <div class="col-md"> <br/>
             <div class="card card-body">
                 <canvas id="myChart1"></canvas>
                 <div>
                   <script>
-                    const labels = [
-                      'January',
-                      'February',
-                      'March',
-                      'April',
-                      'May',
-                      'June',
-                    ];
+                   
                   
                     const data = {
-                      labels: labels,
+                      labels: [{% for report in report %}'{{ report.name }}', {% endfor %}],
                       datasets: [{
-                        label: 'My First dataset',
+                        label: 'recently restocked',
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
+                        data: [{% for report in report %}'{{ report.quantity_restocked }}', {% endfor %}],
                       }]
                     };
                   

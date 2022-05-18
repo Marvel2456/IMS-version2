@@ -1,0 +1,27 @@
+body{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: sans-serif;
+	
+}
+
+
+.logo{
+	width: 100px;
+	height: 100px;
+	color: #0456;
+	margin-top: 10%;
+	position: relative;
+	border-radius: 10px;	
+}
+
+.login-box{
+	background-color:#D3D3D3;
+	border-radius: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	opacity: 1;
+}
+
+

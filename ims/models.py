@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -102,10 +103,17 @@ class Staff(models.Model):
     
     def __str__(self):
         return self.name
-
-
-
     
+class Debtor(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    customer_name = models.CharField(max_length=1000)
+    amount_paid = models.FloatField()
+    amount_owed = models.FloatField()
+    payment_completed = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
     
-    
-
+    def __str__(self):
+        return self.customer_name

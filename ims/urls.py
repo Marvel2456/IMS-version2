@@ -26,5 +26,8 @@ urlpatterns = [
     path('export_sales', views.export_sales_csv, name= 'export_sales'),
     path('export_count', views.export_count_csv, name= 'export_count'),
     path('export_restock', views.export_restock_csv, name= 'export_restock'),
+    path('debt', views.debtors, name= 'debt'),
+    path('update_debt/<str:pk>/', views.UpdateDebt, name='update_debt'),
+    path('delete_debt/<str:pk>/', views.DeleteDebt, name='delete_debt'),
     
 ]

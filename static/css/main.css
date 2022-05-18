@@ -1,0 +1,72 @@
+
+body{
+    background-color: #ebeff5;
+}
+#product{
+    background-color: #4cb4c7;
+}
+#category{
+    background-color: #7abecc;
+}
+#brand{
+    background-color: #76D1C0;
+}
+#stafff{
+    background-color: #4cb455;
+}
+
+
+  .bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+  }
+
+  @media (min-width: 768px) {
+	.bd-placeholder-img-lg {
+	  font-size: 3.5rem;
+	}
+  }
+/* Sweet Alert */
+.swal.fire-modal {
+  background-color: rgba(0, 0, 0, 0.651);
+  color: #fff;
+}
+.swal2-title {
+  color: #fff;
+  font-size: 20px;
+}
+.swal2-text {
+  color: #fff;
+  font-size: 15px;
+}
+
+/* Swal Button */
+
+.swal.fire-button {
+  padding: 7px 19px;
+  border-radius: 5px;
+  background-color: #198754;
+  font-size: 12px;
+  border: 1px solid #198754;
+}
+.swal-button:focus {
+  box-shadow: none;
+}
+.swal2-button:not([disabled]):hover {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #198754;
+}
+/* Icon */
+
+.swal2-icon--success__hide-corners {
+  background: none !important;
+}
+.swal2-icon--success:before,
+.swal2-icon--success:after {
+  background: none !important;
+}
+

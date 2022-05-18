@@ -129,6 +129,32 @@ class ReorderForm(ModelForm):
         widgets = {
             'reorder_level' : forms.TextInput(attrs={'class':'form-control'})
         }
+
+class DebtForm(ModelForm):
+    class Meta:
+        model = Debtor
+        fields = ['product', 'customer_name', 'quantity', 'amount_paid', 'amount_owed',]
+
+        widgets = {
+            'product' : forms.Select(attrs={'class':'form-control'}),
+            'customer_name' : forms.TextInput(attrs={'class':'form-control'}),
+            'quantity' : forms.TextInput(attrs={'class':'form-control'}),
+            'amount_paid' : forms.TextInput(attrs={'class':'form-control'}),
+            'amount_owed' : forms.TextInput(attrs={'class':'form-control'})
+        }
+        
+class DebtUpdateForm(ModelForm):
+    class Meta:
+        model = Debtor
+        fields = ['product', 'customer_name', 'quantity', 'amount_paid', 'amount_owed',]
+
+        widgets = {
+            'product' : forms.Select(attrs={'class':'form-control'}),
+            'customer_name' : forms.TextInput(attrs={'class':'form-control'}),
+            'quantity' : forms.TextInput(attrs={'class':'form-control'}),
+            'amount_paid' : forms.TextInput(attrs={'class':'form-control'}),
+            'amount_owed' : forms.TextInput(attrs={'class':'form-control'})
+        }
         
 class ProductReportForm(forms.ModelForm):
     start_date = forms.DateTimeField(required=False)

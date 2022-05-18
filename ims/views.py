@@ -2,8 +2,8 @@ from urllib import response
 from django import contrib
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
-from .models import Product, Category, Brand, Staff, ProductReport
-from .forms import CatForm, BrandForm, CountForm, ProductForm, CreateUserForm, ReorderForm, RestockForm, SalesForm, ProductUpdateForm, ProductReportForm
+from .models import Product, Category, Brand, Staff, ProductReport, Debtor
+from .forms import CatForm, BrandForm, CountForm, ProductForm, CreateUserForm, ReorderForm, RestockForm, SalesForm, ProductUpdateForm, ProductReportForm, DebtForm, DebtUpdateForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,9 +13,11 @@ from .resources import ProductResource
 from tablib import Dataset
 from django.core.paginator import Paginator
 import csv
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import datetime
 from .filters import reportFilter
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 @unauthenticated_user
 def registerPage(request):
@@ -72,6 +74,9 @@ def dashboard(request):
     cats = Category.objects.all()
     brands = Brand.objects.all()
     staffs = Staff.objects.all()
+    reports = ProductReport.history.order_by('-quantity_sold')[:7]
+    report = ProductReport.history.order_by('-quantity_restocked')[:7]
+    pr = Product.objects.order_by('-available')[:7]
     
     total_staffs = staffs.count()
     total_products = products.count()
@@ -79,6 +84,9 @@ def dashboard(request):
     total_brands = brands.count()
 
     context = {
+        'pr':pr,
+        'reports':reports,
+        'report':report,
         'products':products,
         'cats':cats,
         'brands':brands,
@@ -389,6 +397,58 @@ def simple_upload(request):
     return render(request, 'ims/upload.html')
 
 
+@login_required(login_url=('login'))
+@allowed_users(allowed_roles=['admin','staff'])
+def debtors(request):
+    products = Product.objects.all()
+    debts = Debtor.objects.all()
+    debt_report = Debtor.history.all()
+    debt_form = DebtForm()
+    if request.method == 'POST':
+        debt_form = DebtForm(request.POST)
+        if debt_form.is_valid():
+            debt_form.save()
+            messages.success(request, 'successfully created')
+            return redirect('debt')
+
+        
+    context = {
+        'products': products,
+        'debts': debts,
+        'debt_report': debt_report,
+        'debt_form': debt_form
+    }
+    return render(request, 'ims/debt.html', context)
+
+
+def UpdateDebt(request, pk):
+    debts = Debtor.objects.get(id=pk)
+    form = DebtUpdateForm(instance=debts)
+    if request.method == 'POST':
+        form = DebtUpdateForm(request.POST, instance=debts)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'successfully updated')
+            return redirect('debt')
+    context = {
+        'form':form,
+    }
+    return render(request, 'ims/edit.html', context)
+
+def DeleteDebt(request, pk):
+    debts = Debtor.objects.get(id=pk)
+    if request.method == 'POST':
+        debts.delete()
+        messages.success(request, 'successfully Deleted')
+        return redirect('debt')
+
+    context = {
+        'debts':debts
+    }
+    return render(request, 'ims/delete.html', context)
+    
+
+
 def export_sales_csv(request):
     
     response = HttpResponse(content_type = 'text/csv')
@@ -430,7 +490,7 @@ def export_restock_csv(request):
         writer.writerow([report.history_user, report.name, report.available, report.quantity_restocked, report.last_updated])
     
     return response
-    
+
 
 
 

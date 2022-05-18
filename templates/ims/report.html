@@ -1,7 +1,193 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Store History{% endblock %}
+
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" onkeyup="searchFunction()" id="search" placeholder="search" aria-label="Product Name" aria-describedby="basic-addon2">
+            <span class="input-group-text" id="basic-addon2"><a href="{% url 'report' %}"><i class="bi bi-arrow-repeat"></i></a></span>
+        </div>
+        {% comment %} <form method="post">
+            {% csrf_token %}
+            {{form}}
+
+            <button class="btn btn-dark" type="submit">search</button>
+        </form> {% endcomment %}
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Sales</button>
+              <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Count</button>
+              <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Restock</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="row flex-nowrap example" style="overflow-x: scroll">
+                    <div class="col-12 px-md-5 ps-3">
+                        <table class="table" id="myTable">
+                            <tr>
+                                <th>staff</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Sold</th>
+                                <th>Price Sold</th>
+                                <th>Available</th>
+                                <th>Date</th>
+                                <th><a href="{% url 'export_sales' %}" class="btn btn-outline-dark" title="Download"><i class="fa-solid fa-file-arrow-down"></i></a></th>
+                            </tr>
+                            {% for reports in sim_report_page %}
+                                <tr>
+                                    <td>{{reports.history_user}}</td>
+                                    <td>{{reports.name}}</td>
+                                    <td>{{reports.price}}</td>
+                                    <td>{{reports.quantity_sold}}</td>
+                                    <td>{{reports.total_price}}</td>
+                                    <td>{{reports.available}}</td>
+                                    <td>{{reports.last_updated}}</td>
+                                    
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="row flex-nowrap example" style="overflow-x: scroll">
+                    <div class="col-12 px-md-5 ps-3">
+                        <table class="table" id="myTable">
+                            <tr>
+                                <th>staff</th>
+                                <th>Product</th>
+                                <th>Available</th>
+                                <th>Count</th>
+                                <th>Variance</th>
+                                <th>Date</th>
+                                <th><a href="{% url 'export_count' %}" class="btn btn-outline-dark" title="Download"><i class="fa-solid fa-file-arrow-down"></i></a></th>
+                            </tr>
+                            {% for reports in sim_report_page %}
+                                <tr>
+                                    <td>{{reports.history_user}}</td>
+                                    <td>{{reports.name}}</td>
+                                    <td>{{reports.available}}</td>
+                                    <td>{{reports.count}}</td>
+                                    <td>{{reports.variance}}</td>
+                                    <td>{{reports.last_updated}}</td>
+                                    
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <div class="row flex-nowrap example" style="overflow-x: scroll">
+                    <div class="col-12 px-md-5 ps-3">
+                        <table class="table" id="myTable">
+                            <tr>
+                                <th>staff</th>
+                                <th>Product</th>
+                                <th>Available</th>
+                                <th>Restocked</th>
+                                <th>Date</th>
+                                <th><a href="{% url 'export_restock' %}" class="btn btn-outline-dark" title="Download"><i class="fa-solid fa-file-arrow-down"></i></a></th>
+                            </tr>
+                            {% for reports in sim_report_page %}
+                                <tr>
+                                    <td>{{reports.history_user}}</td>
+                                    <td>{{reports.name}}</td>
+                                    <td>{{reports.available}}</td>
+                                    <td>{{reports.quantity_restocked}}</td>
+                                    <td>{{reports.last_updated}}</td>
+                                    
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<br/>
+<div class="pagination">
+    <span class="step-links">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+        {% if sim_report_page.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ sim_report_page.previous_page_number }}">previous</a></li>
+        {% endif %}
+        {% for i in nums %}
+        <span class="current">
+          <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+        </span>
+        {% endfor %}
+  
+        {% if sim_report_page.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ sim_report_page.next_page_number }}">next</a></li>
+        {% endif %}
+        </ul>
+      </nav>
+    </span>
+</div>
+
+<span class="text-primary" id="no-data"></span>
+
+
+{% endblock %}
+
+
+
+
+{% comment %} {% extends 'base.html' %}
 
 {% block title %}Store Report{% endblock %}
 
-{% block content %}
 
-{% endblock %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <h4>Product</h4>
+        <span>
+          <a href="{% url 'product' %}" class="" id="arrow">
+            <b><i class="bi bi-arrow-left-circle-fill" style="font-size:30px; color:black;"></i></b>
+          </a>
+        </span>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>staff</th>
+                    <th>Product</th>
+                    <th>Restocked</th>
+                    <th>Sold</th>
+                    <th>Available</th>
+                    <th>Count</th>
+                    <th>Variance</th>
+                    <th>Date</th>
+                </tr>
+                {% for reports in sim_report %}
+                <tr>
+                    <td>{{reports.history_user}}</td>
+                    <td>{{reports.name}}</td>
+                    <td>{{reports.quantity_restocked}}</td>
+                    <td>{{reports.quantity_sold}}</td>
+                    <td>{{reports.available}}</td>
+                    <td>{{reports.count}}</td>
+                    <td>{{reports.variance}}</td>
+                    <td>{{reports.last_updated}}</td>
+                    
+                </tr>
+                {% endfor %}
+                
+            </table>
+        </div>
+    </div>
+</div>    
+
+
+
+{% endblock %} {% endcomment %}

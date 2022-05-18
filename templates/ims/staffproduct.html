@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Product{% endblock %}
 {% block content %}
 
@@ -18,61 +19,61 @@
                     <th>Quantity</th>
                     <th>Price</th>
                 </tr>
-                {% for products in products %}
+                {% for products in product_page %}
                 <tr>
                     <td>{{products.name}}</td>
-                    <td>{{products.str_qnty}}</td>
+                    <td>{{products.quantity}}</td>
                     <td>{{products.price}}</td>
-                    <td><a href="{% url 'productdetails_staff' products.id %}" class="btn btn-primary" title="product details"><i class=" bi bi-eye"></a></td>
+                    <td><a href="{% url 'count' products.id %}" class="btn btn-outline-secondary" title="Count">
+                      <i class="fa-solid fa-calculator"></i>
+                      </a>&nbsp;
+                      <a href="{% url 'productdetails_staff' products.id  %}" class="btn btn-outline-success" title="Sales">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                      </a>
+                  </td>
                 </tr>
                 {% endfor %}
             </table>
+            
         </div>
     </div>
 </div>
-<!--Modal-->
-{% comment %} <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModal3Label" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModal3Label">Sales</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form method="post" action="" class="py-3">
-                {% csrf_token %}
-                {{form}}
-                <div class="py-3">
-                <input type="submit" name="Submit" class="btn btn-outline-info">
-                </div>
-            </form>
-        </div>
-      </div>
-    </div>
+ <br/>
+
+<div class="pagination">
+  <span class="step-links">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+      {% if product_page.has_previous %}
+      {% comment %} <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li> {% endcomment %}
+      <li class="page-item"><a class="page-link" href="?page={{ product_page.previous_page_number }}">previous</a></li>
+      {% endif %}
+      {% for i in nums %}
+      <span class="current">
+        <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+      </span>
+      {% endfor %}
+
+      {% if product_page.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ product_page.next_page_number }}">next</a></li>
+      {% comment %} <li class="page-item"><a class="page-link" href="?page={{ product_page.paginator.num_pages }}">last &raquo;</a></li> {% endcomment %}
+      {% endif %}
+    </ul>
+  </nav>
+  </span>
 </div>
-<!--Modal end-->
-<!--Modal-->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModal2Label">Record Count</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form method="post" action="" class="py-3">
-                {% csrf_token %}
-                {{form}}
-                <div class="py-3">
-                <input type="submit" name="Submit" class="btn btn-outline-info">
-                </div>
-            </form>
-        </div>
-      </div>
-    </div>
-</div> {% endcomment %}
-<!--Modal end-->
+
 <span class="text-primary" id="no-data"></span>
+
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+    <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    <script>
+        var m = "{{ message }}";
+        swal.fire("perfect !", m, "success")
+    </script>
+    {% endif %}
+{% endfor %}
 
 
 {% endblock content %}

@@ -4,9 +4,35 @@
         font-size: 16px;      
     }
 </style>
+{% comment %} <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">       
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" id="logo" href="index.html"><img src="img/logo9.png" alt="Logo"></a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-2">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#">Hire Me</a></li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
+<!-- /.navbar --> {% endcomment %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'dashboard' %}">Navbar</a>
+      <a class="navbar-brand" href="{% url 'dashboard' %}">LOGO</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -15,6 +41,10 @@
           <li {% if '/' == request.path %} class="active" {% else %} class="nav-item" {% endif %}>
             <a class="active nav-link" aria-current="page" href="{% url 'dashboard' %}">Home</a>
           </li>
+          <li {% if 'debts' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
+            <a class="active nav-link" href="{% url 'debt' %}">Debt</a>
+          </li>
+
           {% if request.user.is_staff %}
             <li {% if 'product' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
               <a class="active nav-link" href="{% url 'product' %}">Product</a>
