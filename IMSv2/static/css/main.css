@@ -19,7 +19,7 @@ body{
   display: none;
 }
 
-
+/* 
 .navbar {
   -webkit-transition: all 0.6s ease-out;
   -moz-transition: all 0.6s ease-out;
@@ -71,7 +71,7 @@ body{
   -ms-animation: rotate 5s infinite linear;
   animation: rotate 5s infinite linear;
 }
-.navbar-default {
+/* .navbar-default {
   background-color: rgba(0, 0, 0, 0);
   border: none;
 }
@@ -117,15 +117,15 @@ body{
 }
 
 .navbar-default .navbar-toggle .icon-bar {
-  background-color: #07ded4;
-}
+  background-color: #07ded4; */
+/* }
 @media screen and (max-width:767px){
 .navbar .navbar-collapse {
   background: #f8f8f8;
   position: absolute;
   width: 100%;
 }
-}
+} */
 
 
 /* Sweet Alert

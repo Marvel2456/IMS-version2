@@ -1,68 +1,41 @@
 <style>
-    #u-style{
-        color:gainsboro;
-        font-size: 16px;      
-    }
+  #u-style{
+      color:gainsboro;
+      font-size: 16px;      
+  }
 </style>
-{% comment %} <nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">       
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" id="logo" href="index.html"><img src="img/logo9.png" alt="Logo"></a>
-    </div>
-    <div class="collapse navbar-collapse" id="navbar-collapse-2">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="portfolio.html">Portfolio</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="#">Hire Me</a></li>
-      </ul>
-    </div>
-    <!-- /.navbar-collapse -->
-  </div>
-  <!-- /.container -->
-</nav>
-<!-- /.navbar --> {% endcomment %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'dashboard' %}">LOGO</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li {% if '/' == request.path %} class="active" {% else %} class="nav-item" {% endif %}>
-            <a class="active nav-link" aria-current="page" href="{% url 'dashboard' %}">Home</a>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'dashboard' %}">LOGO</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li {% if '/' == request.path %} class="active" {% else %} class="nav-item" {% endif %}>
+          <a class="active nav-link" aria-current="page" href="{% url 'dashboard' %}">Home</a>
+        </li>
+        <li {% if 'debts' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
+          <a class="active nav-link" href="{% url 'debt' %}">Debt</a>
+        </li>
+        {% if request.user.is_staff %}
+          <li {% if 'product' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
+            <a class="active nav-link" href="{% url 'product' %}">Product</a>
           </li>
-          <li {% if 'debts' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
-            <a class="active nav-link" href="{% url 'debt' %}">Debt</a>
+          <li {% if 'brand' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
+            <a class="active nav-link" href="{% url 'brand' %}">Brand</a>
           </li>
-
-          {% if request.user.is_staff %}
-            <li {% if 'product' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
-              <a class="active nav-link" href="{% url 'product' %}">Product</a>
-            </li>
-            <li {% if 'brand' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
-              <a class="active nav-link" href="{% url 'brand' %}">Brand</a>
-            </li>
-            <li {% if 'cat' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
-              <a class="active nav-link" href="{% url 'cat' %}">Category</a>
-            </li>
-            <li {% if 'cat' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
-              <a class="active nav-link" href="{% url 'report' %}">Report</a>
-            </li>
-          {% endif %}
-        </ul>
-        <form class="d-flex">
-          <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Logout | {{request.user}}</a>
-        </form>
-      </div>
+          <li {% if 'cat' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
+            <a class="active nav-link" href="{% url 'cat' %}">Category</a>
+          </li>
+          <li {% if 'cat' in request.path %} class="active" {% else %} class="nav-item" {% endif %}>
+            <a class="active nav-link" href="{% url 'report' %}">Report</a>
+          </li>
+        {% endif %}
+      </ul>
+      <form class="d-flex">
+        <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Logout | {{request.user}}</a>
+      </form>
     </div>
-  </nav>
+  </div>
+</nav>
