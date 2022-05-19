@@ -8,39 +8,41 @@
         <div class="row d-flex justify-content-start">
             <a class="btn btn-outline-info btn-sm col-3 mx-2" href="" data-toggle="modal" data-target="#debtModal">Add Debt</a>
         </div><br/>
+        
         <div class="card card-body">
-            <table class="table">
-                <tr>
-                    <th>Customer</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Paid</th>
-                    <th>Owing</th>
-                    <th>Updated</th>
-                    {% comment %} <th></th> {% endcomment %}
-                </tr>
-                {% for debt in debts %}
-                <tr>
-                    <td>{{debt.customer_name}}</td>
-                    <td>{{debt.product}}</td>
-                    <td>{{debt.quantity}}</td>
-                    <td>{{debt.amount_paid}}</td>
-                    <td>{{debt.amount_owed}}</td>
-                    <td>{{debt.date_updated}}</td>
-                    <td><a href="{% url 'delete_debt' debt.id %}" class="btn btn-danger" title="Delete">
-                        <i class="bi bi-trash-fill"></i>
-                        </a>&nbsp;
-                        <a href="{% url 'update_debt' debt.id %}" class="btn btn-success" title="Edit">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </table>
-           
+            <div class="row flex-nowrap example" style="overflow-x: scroll">
+                <table class="table">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Paid</th>
+                        <th>Owing</th>
+                        <th>Updated</th>
+                        {% comment %} <th></th> {% endcomment %}
+                    </tr>
+                    {% for debt in debts %}
+                    <tr>
+                        <td>{{debt.customer_name}}</td>
+                        <td>{{debt.product}}</td>
+                        <td>{{debt.quantity}}</td>
+                        <td>{{debt.amount_paid}}</td>
+                        <td>{{debt.amount_owed}}</td>
+                        <td>{{debt.date_updated}}</td>
+                        <td><a href="{% url 'delete_debt' debt.id %}" class="btn btn-danger" title="Delete">
+                            <i class="bi bi-trash-fill"></i>
+                            </a>&nbsp;
+                            <a href="{% url 'update_debt' debt.id %}" class="btn btn-success" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </table>
+            
+            </div>
         </div>
-    </div>
 </div>    
 
 <!--Modal-->
