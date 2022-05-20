@@ -29,7 +29,7 @@
 </style>
 <br>
 <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="col-lg-12 col-md-6 col-sm-12">
         {% for products in products %}
             {% if products.quantity <= products.reorder_level %}
             <div class="alert">
@@ -88,27 +88,6 @@
     </div>
 </div>
 
-
-{% comment %} <!--Modal-->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Record Sales</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form method="post" action="" class="py-3">
-                {% csrf_token %}
-                {{update_form}}
-                <div class="py-3">
-                <input type="submit" name="Submit" class="btn btn-outline-info">
-                </div>
-            </form>
-        </div>
-      </div>
-    </div>
-</div> {% endcomment %}
 <!--Modal end-->
 <br/>
 <div class="pagination">
